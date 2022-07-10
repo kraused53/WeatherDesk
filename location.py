@@ -1,7 +1,11 @@
 import geocoder
 
 def get_location():
-	pass
+	g = geocoder.ip('me')
+	data = []
+	data.append(str(g.city+', '+g.state))
+	data.append(g.latlng)
+	return data
 
 
 if __name__ == '__main__':
