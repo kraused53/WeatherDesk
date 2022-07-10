@@ -8,13 +8,21 @@ import geocoder
 
 		Returns a list containing location information
 			['City, State', [lat, long]]
+
+		Returns None on failed attempt
 '''
 def get_location():
 	g = geocoder.ip('me')
-	data = []
-	data.append(str(g.city+', '+g.state))
-	data.append(g.latlng)
-	return data
+
+	# Check for failed location search
+	if g is not None:
+		data = []
+		data.append(str(g.city+', '+g.state))
+		data.append(g.latlng)
+		return data
+	
+	# Return None on failure
+	return None
 
 # If location.py is run as main, print location to terminal
 if __name__ == '__main__':
