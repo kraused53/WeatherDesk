@@ -20,7 +20,7 @@ def get_location():
 		data.append(str(g.city+', '+g.state))
 		data.append(g.latlng)
 		return data
-	
+
 	# Return None on failure
 	return None
 
