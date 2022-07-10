@@ -4,7 +4,7 @@ from requests import get
 
 '''
     get_current_weather(latlng):
-        Uses a given lattitude and longitude in the form:
+        Uses a given latitude and longitude in the form:
             [lat, long]
         to retrieve a weather report for the given location.
 
