@@ -2,7 +2,7 @@ from location import get_location
 from openweather import get_current_weather
 
 if __name__ == '__main__':
-    print('Second Step: Get user location.')
+    print('Fourth Step: Parse weather data.')
 
     # Use IP Geolocation to get Lat/Long estimate
     loc = get_location()
@@ -17,8 +17,35 @@ if __name__ == '__main__':
 
         # Check for failed API call
         if weather is not None:
-            print('It is currently '+str(weather['main']['temp']))
             # Parse JSON response
+            
+            # Define variables to fill
+            current_time = None
+            sunset = None
+            sunrise = None
+            weather_code = None
+
+            # get weather code
+            if 'weather' in weather:
+                if 'id' in weather['weather'][0]:
+                    weather_code = weather['weather'][0]['id']
+
+            # get time of day
+            if 'dt' in weather:
+                current_time = weather['dt']
+
+            if 'sys' in weather:
+                # get sunset time
+                if 'sunrise' in weather['sys']:
+                    sunrise = weather['sys']['sunrise']
+                # get sunrise time
+                if 'sunset' in weather['sys']:
+                    sunset = weather['sys']['sunset']
+
+            print(current_time)
+            print(sunset)
+            print(sunrise)
+            print(weather_code)
 
             # Generate file name based on weather and time of day
 
