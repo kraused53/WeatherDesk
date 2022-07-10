@@ -1,4 +1,5 @@
 from location import get_location
+from openweather import get_current_weather
 
 if __name__ == '__main__':
     print('Second Step: Get user location.')
@@ -12,13 +13,19 @@ if __name__ == '__main__':
         print(loc[1])
 
         # Feed this Lat/Long into weather API
+        weather = get_current_weather(loc[1])
 
-        # Parse JSON response
+        # Check for failed API call
+        if weather is not None:
+            print('It is currently '+str(weather['main']['temp']))
+            # Parse JSON response
 
-        # Generate file name based on weather and time of day
+            # Generate file name based on weather and time of day
 
-        # (OPTIONAL) Add text over image to display time and exact weather conditions
+            # (OPTIONAL) Add text over image to display time and exact weather conditions
 
-        # Apply new desktop
+            # Apply new desktop
+        else:
+            print('ERROR: could not get a weather report')
     else:
         print('ERROR: could not get location')
