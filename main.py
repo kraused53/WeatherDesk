@@ -1,18 +1,24 @@
-
+from location import get_location
 
 if __name__ == '__main__':
-    print('First Step: Empty Program')
+    print('Second Step: Get user location.')
 
     # Use IP Geolocation to get Lat/Long estimate
+    loc = get_location()
 
-    # Feed this Lat/Long into weather API
+    # If get_location fails, exit program
+    if loc is not None:
+        print('You seem to be in ' + loc[0])
+        print(loc[1])
 
-    # Parse JSON response
+        # Feed this Lat/Long into weather API
 
-    # Generate file name based on weather and time of day
+        # Parse JSON response
 
-    # (OPTIONAL) Add text over image to display time and exact weather conditions
+        # Generate file name based on weather and time of day
 
-    # Apply new desktop image
+        # (OPTIONAL) Add text over image to display time and exact weather conditions
 
-    # Profit
+        # Apply new desktop
+    else:
+        print('ERROR: could not get location')
