@@ -1,8 +1,73 @@
 from location import get_location
 from openweather import get_current_weather
+from SECRETS import PATH_TO_IMAGES
+
+"""
+    get_filename(ct, ss, sr, wc):
+        inputs
+            ct -> current unix time (int)
+            ss -> sunset unix time (int)
+            sr -> sunrise unix time (int)
+            wc  -> weather code (int)
+        
+        outputs
+            success -> path to file with name
+            failure -> path to day-clear.jpg
+
+        This function takes parsed weather data and returns the correct 
+            image file path
+"""
+def get_filename(ct, ss, sr, wc):
+    # Create default time name
+    t = 'day'
+
+    # Create default weather name
+    w = '-clear'
+
+    # Check for complete time information
+    if (ct is not None) and (ss is not None) and (sr is not None):
+        # Determine time of day
+        
+        # Dawn if between sr - 2 hours and sr
+        if (ct >= (sr - 7200)) and (ct < sr):
+            t = 'dawn'
+        # Morning if between sr and sr + 2 hours
+        elif (ct >= sr) and (ct < (sr + 7200)):
+            t = 'morning'
+        # Day if between sr + 2 hours and ss - 2 hours
+        elif (ct >= (sr + 7200)) and (ct < (ss - 7200)):
+            t = 'day'
+        # Evening
+        elif (ct >= (ss - 7200)) and (ct < ss):
+            t = 'evening'
+        # Dusk
+        elif (ct >= ss) and (ct < (ss + 7200)):
+            t = 'dusk'
+        # Night
+        else:
+            t = 'night'
+
+    # Check for weather information
+    if wc is not None:
+        # Determine weather name
+
+        # 200s -> Thunderstorm
+        if (wc >= 200) and (wc < 300):
+            w = '-thunder'
+        # 300s and 500s -> Rain
+        elif ((wc >= 300) and (wc < 400)) or ((wc >= 500) and (wc < 600)):
+            w = '-rain'
+        # 600s -> Snow
+        elif (wc >= 600) and (wc < 700):
+            w = '-snow'
+        # All others display clear
+        else:
+            w = '-clear'
+
+    return (PATH_TO_IMAGES + t + w + '.jpg')
 
 if __name__ == '__main__':
-    print('Fourth Step: Parse weather data.')
+    print('Fifth Step: Select proper file.')
 
     # Use IP Geolocation to get Lat/Long estimate
     loc = get_location()
@@ -42,12 +107,9 @@ if __name__ == '__main__':
                 if 'sunset' in weather['sys']:
                     sunset = weather['sys']['sunset']
 
-            print(current_time)
-            print(sunset)
-            print(sunrise)
-            print(weather_code)
-
             # Generate file name based on weather and time of day
+            filepath = get_filename(current_time, sunset, sunrise, weather_code)
+            print(filepath)
 
             # (OPTIONAL) Add text over image to display time and exact weather conditions
 
