@@ -1,6 +1,9 @@
+#!/usr/bin/env python
+
 from location import get_location
 from openweather import get_current_weather
 from SECRETS import PATH_TO_IMAGES
+import subprocess
 
 """
     get_filename(ct, ss, sr, wc):
@@ -67,7 +70,7 @@ def get_filename(ct, ss, sr, wc):
     return (PATH_TO_IMAGES + t + w + '.jpg')
 
 if __name__ == '__main__':
-    print('Fifth Step: Select proper file.')
+    print('Sixth Step: Apply image to desktop.')
 
     # Use IP Geolocation to get Lat/Long estimate
     loc = get_location()
@@ -114,6 +117,9 @@ if __name__ == '__main__':
             # (OPTIONAL) Add text over image to display time and exact weather conditions
 
             # Apply new desktop
+            subprocess.run(['/usr/bin/gsettings', 'set', 'org.gnome.desktop.background', 'picture-uri', filepath], capture_output=True)
+            print('\n\n')
+            
         else:
             print('ERROR: could not get a weather report')
     else:
