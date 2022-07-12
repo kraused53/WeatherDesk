@@ -56,7 +56,7 @@ I have set up this program to use Geocoder to estimate the user's current locati
 
 # Weather API
 
-I am using the [Open Weather API](https://openweathermap.org/api) to gather weather forecasts. All that is required is a location (lattitude and longitude in my case) and an API key. In order to obtain an API key, you will need to register a free account. The API key should then be added to the (not uploaded) SECRETS.py file.
+I am using the [Open Weather API](https://openweathermap.org/api) to gather weather forecasts. All that is required is a location (latitude and longitude in my case) and an API key. In order to obtain an API key, you will need to register a free account. The API key should then be added to the (not uploaded) SECRETS.py file.
 
 ```python
 # Example contents of SECRETS.py
@@ -67,9 +67,11 @@ OW_APIKEY = "place key inside these quotes"
 # FULL path from home directory to project images directory
 PATH_TO_IMAGES = '/SOME/DIRECTORY/TO/PROJECT/WeatherDesk/images/'
 ```
+I am using the standard python requests library to make an API call. I then convert the response into a JSON data set to make it easier to parse. 
+
+The Open Weather API has unique weather codes for a long list of weathers of varying severity, but for this first draft I condensed the output into four categories: clear, rainy, thunderstorm and snow. In the future I plan on expanding the program to encompass as many weather conditions as possible, but that will also require finding or building a new set of images to depict the proper weather events.
 
 # 
-
 
 # ***TODO*** : Add text to image
 
