@@ -16,9 +16,25 @@ As I was looking through other peoples take on the project, I came across the [W
 
 I plan on expanding this project to cover more weather scenarios, so I will eventually replace these with a larger set of photos. But, these will always be one of my favorite sets.
 
-# Program Flow
+# Basic Structure
 
-Here are the main steps this program follow:
+## Project Layout
+
+As of now, the files for this project are:
+1. main.py
+- The center piece of the program, it links all of the other functions together. Currently also contains the logic for selecting the correct background image.
+2. location.py
+- Contains the logic needed to estimate the user's current location.
+3. openweather.py
+- Contains the logic needed to find and retrieve a current weather report. 
+4. ***NOT UPLOADED*** : SECRETS.py
+- 
+5. WeatherDesk.sh
+- A bash file used to automate the program to run at regular intervals
+6. ***DIRECTORY*** : images
+- A directory holding all of the images used by this program
+
+## Program Flow
 
 1. Determine Location
 2. Retrieve Weather Forecast
@@ -26,24 +42,25 @@ Here are the main steps this program follow:
 4. ***TODO*** Add Header with Time, Location and Forecast to Image
 5. Set Desktop Background
 
-# Determine Location
+## Automation
+
+In order to automate this program on my Linux PC (running Ubuntu 22.04 LTS) I created a bash file to be run by a CRON job. CRON is a standard automation software that now ships with Ubuntu installations. The bash file is needed in order to provide the python program with the context and PATH needed to execute properly.
+
+# location.py
 
 One of the features I wanted to implement was automatic location estimation. This would mean that if the program was running on a laptop (like mine would be), the background would reflect the weather of the user's current location.
 
 In order to implement this, I settled on the [geocoder library](https://geocoder.readthedocs.io/api.html). This library has several powerful geocoding capabilities, but it is really simple to use.
 
-I have set up this program to use Geocoder to estimate the user's current location via their current IP address. So, as long as the user has an internet connection ad is not using a VPN, the program should be able to determine a reletivly accurate location.
+I have set up this program to use Geocoder to estimate the user's current location via their current IP address. So, as long as the user has an internet connection ad is not using a VPN, the program should be able to determine a relatively accurate location.
 
 # Retrieve Weather Forecast
-
 
 
 # Parse Forecast and Select Image
 
 
-
 # ***TODO*** : Add text to image
-
 
 
 # Set Desktop Background
