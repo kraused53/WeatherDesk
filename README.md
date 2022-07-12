@@ -46,7 +46,7 @@ As of now, the files for this project are:
 
 In order to automate this program on my Linux PC (running Ubuntu 22.04 LTS) I created a bash file to be run by a CRON job. CRON is a standard automation software that now ships with Ubuntu installations. The bash file is needed in order to provide the python program with the context and PATH needed to execute properly.
 
-# location.py
+# Location Estimation
 
 One of the features I wanted to implement was automatic location estimation. This would mean that if the program was running on a laptop (like mine would be), the background would reflect the weather of the user's current location.
 
@@ -54,14 +54,21 @@ In order to implement this, I settled on the [geocoder library](https://geocoder
 
 I have set up this program to use Geocoder to estimate the user's current location via their current IP address. So, as long as the user has an internet connection ad is not using a VPN, the program should be able to determine a relatively accurate location.
 
-# Retrieve Weather Forecast
+# Weather API
 
+I am using the [Open Weather API](https://openweathermap.org/api) to gather weather forecasts. All that is required is a location (lattitude and longitude in my case) and an API key. In order to obtain an API key, you will need to register a free account. The API key should then be added to the (not uploaded) SECRETS.py file.
 
-# Parse Forecast and Select Image
+'''python
+
+#Example Contents of SECRETS.py
+
+OW_APIKEY = '1948ddfd6442ede84e1adb772646c94f'
+PATH_TO_IMAGES = '/home/daniel/Documents/projects/WeatherDesk/WeatherDesk/images/'
+
+'''
+
+# 
 
 
 # ***TODO*** : Add text to image
-
-
-# Set Desktop Background
 
