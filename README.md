@@ -32,7 +32,7 @@ One of the features I wanted to implement was automatic location estimation. Thi
 
 In order to implement this, I settled on the [geocoder library](https://geocoder.readthedocs.io/api.html). This library has several powerful geocoding capabilities, but it is really simple to use.
 
-I have set up this program to use Geocoder to 
+I have set up this program to use Geocoder to estimate the user's current location via their current IP address. So, as long as the user has an internet connection ad is not using a VPN, the program should be able to determine a reletivly accurate location.
 
 # Retrieve Weather Forecast
 
