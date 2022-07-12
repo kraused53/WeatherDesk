@@ -58,14 +58,15 @@ I have set up this program to use Geocoder to estimate the user's current locati
 
 I am using the [Open Weather API](https://openweathermap.org/api) to gather weather forecasts. All that is required is a location (lattitude and longitude in my case) and an API key. In order to obtain an API key, you will need to register a free account. The API key should then be added to the (not uploaded) SECRETS.py file.
 
-'''python
+```python
+# Example contents of SECRETS.py
 
-#Example Contents of SECRETS.py
+# API Key from openweather
+OW_APIKEY = "place key inside these quotes"
 
-OW_APIKEY = '1948ddfd6442ede84e1adb772646c94f'
-PATH_TO_IMAGES = '/home/daniel/Documents/projects/WeatherDesk/WeatherDesk/images/'
-
-'''
+# FULL path from home directory to project images directory
+PATH_TO_IMAGES = '/SOME/DIRECTORY/TO/PROJECT/WeatherDesk/images/'
+```
 
 # 
 
