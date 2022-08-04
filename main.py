@@ -56,18 +56,18 @@ def get_filename(ct, ss, sr, wc):
 
         # 200s -> Thunderstorm
         if (wc >= 200) and (wc < 300):
-            w = '-thunder'
+            w = '200/200/200-'
         # 300s and 500s -> Rain
         elif ((wc >= 300) and (wc < 400)) or ((wc >= 500) and (wc < 600)):
-            w = '-rain'
+            w = '500/500/500-'
         # 600s -> Snow
         elif (wc >= 600) and (wc < 700):
-            w = '-snow'
+            w = '600/600/600-'
         # All others display clear
         else:
-            w = '-clear'
+            w = '800/800/800-'
 
-    return (PATH_TO_IMAGES + t + w + '.jpg')
+    return (PATH_TO_IMAGES + w + t + '.jpg')
 
 if __name__ == '__main__':
     print('Sixth Step: Apply image to desktop.')
