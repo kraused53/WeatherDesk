@@ -12,14 +12,30 @@ Unfortunately, a quick google search told me that I was not by any means the fir
 
 As I was looking through other peoples take on the project, I came across the [WeatherDesk](https://github.com/bharadwaj-raju/WeatherDesk) project by GitHub user [bharadwaj-raju](https://github.com/bharadwaj-raju). They had a complete set of images based on the video game [FireWatch](https://www.firewatchgame.com/) that I fell in love with. 
 
-![Image for a clear day](/images/day-clear.jpg)
+![Image for a clear day](/images/800/800/800-day.jpg)
 
 I have several ideas that I still want to implement, so this repository is still subject to change.
 
-# Setup
+# Program Flow
 
+As of now, this program will follow consist of five steps:
 
-The only library I used that wasnt part of the standard python 3.10.4 instalation was geocoder. I installed it running the following in the terminal:
+## 1. Get user's location
 
-> pip install geocoder
+I am using the Geocoder library to get an estimation of the user's current location. With a few lines of code, the Geocoder library can use the user's IP address to estimate lat/long and the city the user is nearest to.
 
+## 2. Get weather forecast using this location
+
+Once the program has gathered the user's location it will attempt to use the OpenWeather API to get a weather forecast. I am using the python requests library to make the API call and covert the response into a JSON package.
+
+## 3. Use the weather forecast to select a background image
+
+Using the time of day and the current weather conditions, the program will select the proper image from it's repository.
+
+## 4. Make a copy of this image and overlay information from the forecast
+
+Then, using the python image library (PIL or PILLOW) the program will overlay information from the forecast onto a copy of the image from step 3. This overlay will contain things like the current time, temperature and weather condition as well as an hourly future forecast
+
+## 5. Set this new image as the desktop background
+
+Finally, the program will set this new image as the computer's desktop background.
