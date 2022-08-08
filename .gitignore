@@ -129,4 +129,4 @@ dmypy.json
 .pyre/
 
 SECRETS.py
-use-this-image.jpg
+./images/use-this-image.jpg
