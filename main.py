@@ -8,6 +8,8 @@ import os
 from SECRETS import PATH_TO_IMAGES
 # Used to edit found image
 from PIL import Image, ImageDraw, ImageFont
+# Used to convert unix timecode to date/time
+from datetime import datetime
 # Used to set the background image
 import subprocess
 
@@ -243,18 +245,27 @@ if __name__ == '__main__':
         width=10,
         )
 
-    # Generate text box
-    forecast_text='City:  {city}\nState: {state}\nTime:  {time}'.format(
-        city=location[0],
-        state=location[1],
-        time=wd[0]
-        )
+    ct = datetime.utcfromtimestamp(int(wd[0])-14400).strftime('%-I:%M %p')
 
-    f = ImageFont.truetype("DejaVuSans.ttf", 20)
+    # Generate text box
+#    forecast_text='City:  {city}\nState: {state}\nTime:  {time}'.format(
+#        city=location[0],
+#        state=location[1],
+#        time=ct,
+#        )
+
+    f = ImageFont.truetype("DejaVuSans.ttf", 18)
+
+    draw.text(
+        (im.size[0]-400+15, im.size[1]+15),
+        location[0],
+        fill='black',
+        font=f
+    )
 
     draw.text(
         (im.size[0]-400+15, im.size[1]-200+15),
-        forecast_text,
+        ct,
         fill='black',
         font=f
     )
