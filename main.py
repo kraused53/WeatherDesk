@@ -7,7 +7,7 @@ from SECRETS import OW_APIKEY
 import os
 from SECRETS import PATH_TO_IMAGES
 # Used to edit found image
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 # Used to set the background image
 import subprocess
 
@@ -209,13 +209,14 @@ def get_image_path(dt, sr, ss, wc):
 if __name__ == '__main__':
     # Step 1: Get user location
     location = get_location()
-
+#    location = ['Evansville', 'Indiana', [37.9678, -87.4855]]
     print('Step 1: Get user location')
     print(location)
     print(' ')
 
     # Step 2: Get weather forecast
     wd = get_forecast(location[2])
+#    wd = [1659984303, 1659956345, 1660006328, 801]
     print('Step 2: Get forecast')
     print(wd)
     print(' ')
@@ -228,8 +229,39 @@ if __name__ == '__main__':
 
     # Step 4: Create image overlay
     print('Step 4: Create image overlay')
+    # Open a copy of the image
     im = Image.open(image_path)
 
+    # Set up image for drawing
+    draw = ImageDraw.Draw(im)
+
+    # test line
+    draw.rectangle(
+        [(im.size[0]-400, im.size[1]-200), im.size],
+        fill=(255, 255, 255),
+        outline=(0, 0, 0),
+        width=10,
+        )
+
+    # Generate text box
+    forecast_text='City:  {city}\nState: {state}\nTime:  {time}'.format(
+        city=location[0],
+        state=location[1],
+        time=wd[0]
+        )
+
+    f = ImageFont.truetype("DejaVuSans.ttf", 20)
+
+    draw.text(
+        (im.size[0]-400+15, im.size[1]-200+15),
+        forecast_text,
+        fill='black',
+        font=f
+    )
+
+#    im.show()
+
+    # Save the edited image in a new spot
     im.save(PATH_TO_IMAGES+'use-this-image.jpg')
 
     print(' ')
