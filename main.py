@@ -4,7 +4,7 @@ import geocoder
 import requests
 from SECRETS import OW_APIKEY
 # Used to check if files exist
-from os.path import exists
+import os
 from SECRETS import PATH_TO_IMAGES
 # Used to set the background image
 import subprocess
@@ -107,68 +107,95 @@ def get_forecast(latlng):
 
 
 '''
-
     Step 3: Select an image
-
-        This function takes the user's weather forecast and selects the 
-        proper image
-
-    return:
-        Success -> [path to image, [errors]]
+'''
+'''
+    This function will attempt to fin the given file in the given directory.
+        It will search all sub-directories and return only the first instance
+        of the given filename
+    
+    Inputs:
+        filename -> (str) name of file to find
+        path -> (str) full path to directory to be searched
+    
+    Return:
+        Success -> path to fist instance of filename in path
         Failure -> None
+'''
+def find(filename, path):
+    '''
+        os.walk generates 3 items
+            1] (str) the current root directory
+            2] ([(str)]) A list of all directories found in root
+            3] ([(str)]) A list of all non-directory items found in root
+    '''
+    for root, dirs, files, in os.walk(path):
+        # Check to see if file has been found
+        if filename in files:
+            return os.path.join(root, filename)
+    
+    # If file is not found
+    return None
 
 '''
-def get_image_path(data):
+    This function will attempt to find an image that corresponds with 
+        the given time and weather information
+
+    return:
+        Success -> path to image
+        Failure -> path to default image
+
+'''
+def get_image_path(dt, sr, ss, wc):
     # set default time
-    t = 'day'
+    t = '-day'
 
     # If we have all time information
-    if (data[2] is not None)and(data[2] is not None)and(data[2] is not None):
+    if (dt is not None) and (sr is not None) and (ss is not None):
         # Determine time of day
 
         # Dawn if between sr - 2 hours and sr
-        if (data[0] >= (data[1]- 7200)) and (data[0] < data[1]):
-            t = 'dawn'
+        if (dt >= (sr- 7200)) and (dt < sr):
+            t = '-dawn'
         # Morning if between sr and sr + 2 hours
-        elif (data[0] >= data[1]) and (data[0] < (data[1]+ 7200)):
-            t = 'morning'
+        elif (dt >= sr) and (dt < (sr+ 7200)):
+            t = '-morning'
         # Day if between sr + 2 hours and ss - 2 hours
-        elif (data[0] >= (data[1]+ 7200)) and (data[0] < (data[2]- 7200)):
-            t = 'day'
+        elif (dt >= (sr+ 7200)) and (dt < (ss- 7200)):
+            t = '-day'
         # Evening
-        elif (data[0] >= (data[2]- 7200)) and (data[0] < data[2]):
-            t = 'evening'
+        elif (dt >= (ss- 7200)) and (dt < ss):
+            t = '-evening'
         # Dusk
-        elif (data[0] >= data[2]) and (data[0] < (data[2]+ 7200)):
-            t = 'dusk'
+        elif (dt >= ss) and (dt < (ss+ 7200)):
+            t = '-dusk'
         # Night
         else:
-            t = 'night'
+            t = '-night'
 
-    # Check for weather code
-    if data[3] is not None:
-        weather_group = str(int(data[3] / 100) * 100)
-    else:
-        weather_group = '800'
+    # Convert weathercode into a string
+    wc = str(wc)
 
-    image_name = '/{wc}-{t}.jpg'.format(wc=str(data[3]), t=t)
+    image_name = '/{wc}{t}.jpg'.format(wc=wc, t=t)
 
-    # Check for weather group folder
-    path = PATH_TO_IMAGES + weather_group
-    if exists(path):
-        # Check for specific weather code
-        if exists(path + '/' + str(data[3])):
-            # Check for specific image
-            if exists(path + '/' + str(data[3]) + image_name):
-                return path + '/' + str(data[3]) + image_name
-            # If the specific image does not exist, use default for group
-            else:
-                image_name = '/{wc}-{t}.jpg'.format(wc=weather_group, t=t)
-                if exists(path + '/' + weather_group + image_name):
-                    return path + '/' + weather_group + image_name
+    # Try to find the genearated image
+    fp = find(wc+t+'.jpg', PATH_TO_IMAGES)
+
+    # If not found
+    if fp is None:
+        print('File not found, trying default for group...')
+        # Try to find default image for this weather group
+        image_name = '/{wc}00{t}.jpg'.format(wc=wc[0], t=t)
+        fp = find(wc[0]+'00'+t+'.jpg', PATH_TO_IMAGES)
+
+        # If not found
+        if fp is None:
+            print('File not found, returning system default...')
+            # Return path to default image
+            return PATH_TO_IMAGES+'800/800/800-day.jpg'
     
-    # Check to see is
-    return None
+    # If file is found at any point, return the file path
+    return fp
 
 '''
     Everything below runs whenever main.py is run
@@ -182,14 +209,14 @@ if __name__ == '__main__':
     print(' ')
 
     # Step 2: Get weather forecast
-    forecast = get_forecast(location[2])
+    wd = get_forecast(location[2])
     print('Step 2: Get forecast')
-    print(forecast)
+    print(wd)
     print(' ')
 
     # Step 3: Select an image
-    image_path = get_image_path(forecast)
     print('Step 3: Select image')
+    image_path = get_image_path(wd[0], wd[1], wd[2], wd[3])
     print(image_path)
     print(' ')
 
