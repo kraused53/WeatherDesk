@@ -6,17 +6,19 @@ from SECRETS import OW_APIKEY
 # Used to check if files exist
 import os
 from SECRETS import PATH_TO_IMAGES
+# Used to edit found image
 # Used to set the background image
 import subprocess
 
 '''
-
     Section 1: Get the user's location
 
         I will be using the geocoder library to use the user's IP address to 
         gather location information.
 
-    return:
+    Inputs: None
+
+    Return:
         Success -> [city, state, [lat, long]]
         Failure -> None
 '''
@@ -49,7 +51,10 @@ def get_location():
         I will be using the requests library to make an API call to the
         OpenWeatherAPI and extract the information I want
 
-    return:
+    Inputs:
+        latlng -> [latitude, longitude]
+
+    Return:
         Success -> [
             [current time],
             [sunrise],
