@@ -7,6 +7,7 @@ from SECRETS import OW_APIKEY
 import os
 from SECRETS import PATH_TO_IMAGES
 # Used to edit found image
+from PIL import Image
 # Used to set the background image
 import subprocess
 
@@ -227,7 +228,10 @@ if __name__ == '__main__':
 
     # Step 4: Create image overlay
     print('Step 4: Create image overlay')
-    print('SKIP FOR NOW')
+    im = Image.open(image_path)
+
+    im.save(PATH_TO_IMAGES+'use-this-image.jpg')
+
     print(' ')
 
     # Step 5: Apply new desktop
@@ -239,5 +243,5 @@ if __name__ == '__main__':
             'set', 
             'org.gnome.desktop.background', 
             'picture-uri', 
-            image_path
+            PATH_TO_IMAGES+'use-this-image.jpg'
         ], capture_output=True)
