@@ -245,8 +245,6 @@ if __name__ == '__main__':
         width=10,
         )
 
-    ct = datetime.utcfromtimestamp(int(wd[0])-14400).strftime('%-I:%M %p')
-
     # Generate text box
 #    forecast_text='City:  {city}\nState: {state}\nTime:  {time}'.format(
 #        city=location[0],
@@ -254,18 +252,22 @@ if __name__ == '__main__':
 #        time=ct,
 #        )
 
-    f = ImageFont.truetype("DejaVuSans.ttf", 18)
+    f = ImageFont.truetype("DejaVuSans.ttf", 16)
+
+    text = location[0] + ', ' + location[1]
 
     draw.text(
-        (im.size[0]-400+15, im.size[1]+15),
-        location[0],
+        (im.size[0]-400+15, im.size[1]-15-f.size),
+        text,
         fill='black',
         font=f
     )
 
+    text = datetime.utcfromtimestamp(int(wd[0])-14400).strftime('%-I:%M %p')
+
     draw.text(
         (im.size[0]-400+15, im.size[1]-200+15),
-        ct,
+        text,
         fill='black',
         font=f
     )
