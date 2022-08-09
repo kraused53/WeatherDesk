@@ -62,7 +62,9 @@ def get_location():
             [current time],
             [sunrise],
             [sunset],
-            [weather ID]
+            [weather ID],
+            [weather description],
+            [current temp],
         ]
         Failure -> None
 
@@ -108,8 +110,25 @@ def get_forecast(latlng):
             weather_data.append(raw_weather_data['weather'][0]['id'])
         else:
             weather_data.append(None)
+        
+        # Check for current weather description
+        if 'main' in raw_weather_data['weather'][0]:
+            weather_data.append(raw_weather_data['weather'][0]['main'])
+        else:
+            weather_data.append(None)
     else:
-        weather_data.append(None)
+        weather_data.append(None) # For ID
+        weather_data.append(None) # For description
+
+    # Check for current temperature
+    if 'main' in raw_weather_data:
+        # Check for temperature
+        if 'temp' in raw_weather_data['main']:
+            weather_data.append(raw_weather_data['main']['temp'])
+        else:
+            weather_data.append(None) # For temperature            
+    else:
+        weather_data.append(None) # For temperature
     
     return weather_data
 
@@ -252,7 +271,7 @@ if __name__ == '__main__':
 #        time=ct,
 #        )
 
-    f = ImageFont.truetype("DejaVuSans.ttf", 16)
+    f = ImageFont.truetype("DejaVuSans.ttf", 18)
 
     text = location[0] + ', ' + location[1]
 
@@ -271,6 +290,20 @@ if __name__ == '__main__':
         fill='black',
         font=f
     )
+
+    if wd[5] is not None:
+        # Add temperature
+        text = str(wd[5]) + ' °F'
+
+        f = ImageFont.truetype("DejaVuSans.ttf", 22)
+        w, h = f.getsize(text)
+
+        draw.text(
+            (im.size[0]-200-(w/2), im.size[1]-100-(h/2)),
+            text,
+            fill='black',
+            font=f
+        )
 
 #    im.show()
 
