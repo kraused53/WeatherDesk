@@ -2,6 +2,8 @@ from location import LATITUDE, LONGITUDE
 from weather_codes import *
 import requests
 import time
+import ctypes
+import os
 
 API_URL = (
         "https://api.open-meteo.com/v1/forecast?" +     # Base URL
@@ -87,13 +89,27 @@ def parse_weather(data) -> str:
     # All other codes normal
     return "normal"
 
+def apply_wallpaper( image_path ):
+    # Constants for setting the wallpaper
+    spi_setdeskwallpaper = 20  # Action to change wallpaper
+    spif_updateinifile = 0x01  # Update user profile
+    spif_sendwininichange = 0x02  # Notify change to system
+
+    # Apply wallpaper
+    ctypes.windll.user32.SystemParametersInfoW(
+        spi_setdeskwallpaper,
+        0,
+        path,
+        spif_updateinifile | spif_sendwininichange
+    )
+
 if __name__ == '__main__':
     # Make API request
     raw_api_data = requests.get( API_URL )
 
     # validate response
     if raw_api_data.status_code != 200:
-        print( f"Invalid API response code: {raw_api_data.status_code}" )
+        #print( f"Invalid API response code: {raw_api_data.status_code}" )
         exit( 1 )
 
     # Convert response into json
@@ -101,5 +117,8 @@ if __name__ == '__main__':
 
     time_of_day = get_time_of_day( json_data )
     weather = parse_weather( json_data )
+    file_name = time_of_day + "-" + weather + ".jpg"
 
-    print( time_of_day + "-" + weather + ".jpg" )
+    path = os.path.abspath("images/" + file_name)
+
+    apply_wallpaper( path )
