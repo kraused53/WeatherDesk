@@ -1,1 +1,5 @@
 location.py
+
+.idea/*
+
+__pycache__/*
