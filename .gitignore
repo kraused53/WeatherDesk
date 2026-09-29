@@ -1,5 +1,5 @@
-location.py
+.venv
+.env
+__pycache__
 
-.idea/*
-
-__pycache__/*
+images/desktop.jpg
