@@ -1,17 +1,21 @@
 from PIL import Image, ImageDraw, ImageFont
-from os import path
-from parse_weather_data import *
+from pathlib import Path
+from parse_weather_data import (
+    get_current_time, 
+    get_current_temperature, 
+    get_current_humidity, 
+    get_current_precipitation_probability
+)
 from datetime import datetime, timezone
 
 
 # This function will take an image name and a dictionary of weather data to generate a
 #   mini report and add it to the given image. The new image will be stored as
 #   images/desktop.jpg
-def make_desktop_image(img_title: str, data: dict) -> None:
-    working_dir = path.abspath(".")
+def make_desktop_image(img_title: str, data: dict, project_dir: Path, image_dir: Path, font_dir: Path) -> None:
 
     # Open image and create ImageDraw object
-    image = Image.open(working_dir + "\\images\\" + img_title)
+    image = Image.open(image_dir / img_title)
     draw = ImageDraw.Draw(image)
 
     # Get size and define box location
@@ -23,7 +27,7 @@ def make_desktop_image(img_title: str, data: dict) -> None:
 
     # Load font
     try:
-        font = ImageFont.truetype(working_dir+"\\fonts\\SpaceMono.ttf", size=16)
+        font = ImageFont.truetype(font_dir / "SpaceMono.ttf", size=16)
     except IOError:
         # Fallback to the default system font if the file isn't found
         font = ImageFont.load_default()
@@ -60,4 +64,4 @@ def make_desktop_image(img_title: str, data: dict) -> None:
     draw.text((text_x, text_y), weather_text, fill="Black", font=font)
 
     # Save image
-    image.save(working_dir + "\\images\\desktop.jpg")
+    image.save(image_dir / "desktop.jpg")

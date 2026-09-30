@@ -1,43 +1,40 @@
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 import requests
 import ctypes
 
-from parse_weather_data import *
-from make_image import *
+from parse_weather_data import get_day_section, get_weather_type
+from make_image import make_desktop_image
 
 # Make an API request to open-meteo
 def get_weather_data() -> dict:
     # Import environment secrets
     load_dotenv()
 
-    API_URL= (
-        # Setup and location
-        "https://api.open-meteo.com/v1/forecast?" +     # Base URL
-        f"latitude={os.getenv("LAT")}" +                # User's lattitude
-        f"&longitude={os.getenv("LON")}" +              # User's longitutde
-        # Daily weather reporting
-        "&daily=" +
-        "sunrise," +
-        "sunset" +
-        # Current weather reporting 
-        "&current=" +
-        "weather_code," +
-        "temperature_2m," +
-        "relative_humidity_2m," +
-        "relative_humidity_2m," +
-        "precipitation_probability" +
-        # Location and settings
-        "&timezone=America%2FNew_York&" +
-        "forecast_days=1" +
-        "&timeformat=unixtime" +
-        "&wind_speed_unit=mph" +
-        "&temperature_unit=fahrenheit" +
-        "&precipitation_unit=inch"
-    )
+    params = {
+        "latitude": os.getenv("LAT"),
+        "longitude": os.getenv("LON"),
+        "daily": "sunrise,sunset",
+        "current": (
+            "weather_code,"
+            "temperature_2m,"
+            "relative_humidity_2m,"
+            "precipitation_probability"
+        ),
+        "timezone": "auto",
+        "forecast_days": 1,
+        "timeformat": "unixtime",
+        "temperature_unit": "fahrenheit",
+        "wind_speed_unit": "mph",
+        "precipitation_unit": "inch",
+    }
 
-    print(API_URL)
-    api_response = requests.get(API_URL)
+    api_response = requests.get(
+        "https://api.open-meteo.com/v1/forecast",
+        params=params,
+        timeout=10
+    )
 
     # There was a problem with the API call, return None
     if api_response.status_code != 200:
@@ -68,6 +65,9 @@ def apply_wallpaper(img: str) -> None:
         raise ctypes.WinError(error)
 
 if __name__ == "__main__":
+    PROJECT_DIR = Path(__file__).resolve().parent
+    IMAGE_DIR = PROJECT_DIR / "images"
+    FONT_DIR = PROJECT_DIR / "fonts"
 
     weather_data = get_weather_data()
 
@@ -75,8 +75,8 @@ if __name__ == "__main__":
     wt = get_weather_type(weather_data)
 
     file_name = f"{ds}-{wt}.jpg"
-    img = os.path.abspath("images/desktop.jpg")
 
-    make_desktop_image(file_name, weather_data)
+    make_desktop_image(file_name, weather_data, PROJECT_DIR, IMAGE_DIR, FONT_DIR)
 
-    apply_wallpaper(os.path.abspath("images")+"/desktop.jpg")
+    img = IMAGE_DIR / "desktop.jpg"
+    apply_wallpaper(str(img))
