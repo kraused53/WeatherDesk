@@ -1,66 +1,34 @@
 # Get current time
 def get_current_time(data: dict) -> int:
-    if "current_units" not in data or "time" not in data["current_units"]:
-        print("Could not find units for current time!")
+    try:
+        return data["current"]["time"]
+    except KeyError:
+        print("Could not find current time!")
         return -1
-
-    if data["current_units"]["time"] != "unixtime":
-        print("Only unixtime stamps are supported!")
-        return -1
-
-    if "current" not in data or "time" not in data["current"]:
-        print("Could not find report for current time!")
-        return -1
-
-    return data["current"]["time"]
 
 # Get sunrise time
 def get_sunrise_time(data: dict) -> int:
-    if "daily_units" not in data or "time" not in data["daily_units"]:
-            print("Could not find units for current temperature!")
-            return -1
-
-    if data["daily_units"]["time"] != "unixtime":
-        print("Only unixtime stamps are supported!")
+    try:
+        return data["daily"]["sunrise"][0]
+    except KeyError:
+        print("Could not find today's sunrise time!")
         return -1
-
-    if "daily" not in data or "sunrise" not in data["daily"]:
-        print("Could not find report for sunrise time!")
-        return -1
-
-    return data["daily"]["sunrise"][0]
 
 # Get sunset time
 def get_sunset_time(data: dict) -> int:
-    if "daily_units" not in data or "time" not in data["daily_units"]:
-            print("Could not find units for current temperature!")
-            return -1
-
-    if data["daily_units"]["time"] != "unixtime":
-        print("Only unixtime stamps are supported!")
+    try:
+        return data["daily"]["sunset"][0]
+    except KeyError:
+        print("Could not find today's sunset time!")
         return -1
-
-    if "daily" not in data or "sunset" not in data["daily"]:
-        print("Could not find report for sunset time!")
-        return -1
-
-    return data["daily"]["sunset"][0]
 
 # Get current weather code
 def get_current_weather_code(data: dict) -> int:
-    if "current_units" not in data or "weather_code" not in data["current_units"]:
-            print("Could not find units for current weather code!")
-            return -1
-
-    if data["current_units"]["weather_code"] != "wmo code":
-        print("Only wmo codes are supported!")
+    try:
+        return data["current"]["weather_code"]
+    except KeyError:
+        print("Could not find current weather code!")
         return -1
-
-    if "current" not in data or "weather_code" not in data["current"]:
-        print("Could not find report for current weather code!")
-        return -1
-
-    return data["current"]["weather_code"]
 
 # Return the difference between two unix time stamps
 def time_diff(a: int, b: int) -> int:

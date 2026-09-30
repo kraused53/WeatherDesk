@@ -51,8 +51,8 @@ def make_desktop_image(img_title: str, data: dict) -> None:
     draw.rounded_rectangle(
         xy=rect_coords,
         radius=20,
-        outline="Black",
-        fill="Gray",
+        outline="Gray",
+        fill="Silver",
         width=10
     )
 
