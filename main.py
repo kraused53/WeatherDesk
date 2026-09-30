@@ -11,8 +11,32 @@ def get_weather_data() -> dict:
     # Import environment secrets
     load_dotenv()
 
-    API_URL=f"https://api.open-meteo.com/v1/forecast?latitude={os.getenv("LAT")}&longitude={os.getenv("LON")}&daily=sunrise,sunset&current=weather_code&timezone=America%2FNew_York&forecast_days=1&timeformat=unixtime&wind_speed_unit=mph&temperature_unit=fahrenheit&precipitation_unit=inch"
+    API_URL= (
+        # Setup and location
+        "https://api.open-meteo.com/v1/forecast?" +     # Base URL
+        f"latitude={os.getenv("LAT")}" +                # User's lattitude
+        f"&longitude={os.getenv("LON")}" +              # User's longitutde
+        # Daily weather reporting
+        "&daily=" +
+        "sunrise," +
+        "sunset" +
+        # Current weather reporting 
+        "&current=" +
+        "weather_code," +
+        "temperature_2m," +
+        "relative_humidity_2m," +
+        "relative_humidity_2m," +
+        "precipitation_probability" +
+        # Location and settings
+        "&timezone=America%2FNew_York&" +
+        "forecast_days=1" +
+        "&timeformat=unixtime" +
+        "&wind_speed_unit=mph" +
+        "&temperature_unit=fahrenheit" +
+        "&precipitation_unit=inch"
+    )
 
+    print(API_URL)
     api_response = requests.get(API_URL)
 
     # There was a problem with the API call, return None

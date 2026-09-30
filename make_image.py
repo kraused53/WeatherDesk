@@ -16,21 +16,29 @@ def make_desktop_image(img_title: str, data: dict) -> None:
 
     # Get size and define box location
     w, h = image.size
-    rect_coords = (w-620, h-220, w-20, h-20)
+    rect_coords = (w-425, h-225, w-20, h-20)
     rect_cent_x = ( rect_coords[2] + rect_coords[0] ) // 2
     rect_cent_y = ( rect_coords[3] + rect_coords[1] ) // 2
 
 
     # Load font
     try:
-        font = ImageFont.truetype("arial.ttf", size=24)
+        font = ImageFont.truetype(working_dir+"\\fonts\\SpaceMono.ttf", size=16)
     except IOError:
         # Fallback to the default system font if the file isn't found
         font = ImageFont.load_default()
 
     # Build image text
     current_time = datetime.fromtimestamp(get_current_time(data)).strftime("%I:%M %p")
-    weather_text = f"Time:  {current_time}"
+    weather_text =  (
+        "+==========================+\n" +
+        f"| Time .......... {current_time} |\n"+
+        "+==========================+\n" +
+        f"| Temperature .... {get_current_temperature(data):3} °F |\n" +
+        f"| Humidity .......... {get_current_humidity(data):2} % |\n" +
+        f"| Precipitation ..... {get_current_precipitation_probability(data):2} % |\n" +
+        "+==========================+\n"
+    )
 
     text_box = draw.textbbox((0, 0), weather_text, font=font)
     text_cent_x = text_box[2] - text_box[0]

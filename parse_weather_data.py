@@ -105,3 +105,29 @@ def get_weather_type(data: dict) -> str:
     print(wc)
 
     return "normal"
+
+# Get current temperature
+def get_current_temperature(data: dict) -> float:
+    try:
+        return data["current"]["temperature_2m"]
+    except KeyError:
+        print("Could not find current temperature data")
+        return 0.0
+
+# Get current humidity
+def get_current_humidity(data: dict) -> int:
+    try:
+        return int(data["current"]["relative_humidity_2m"])
+    except KeyError:
+        print("Could not find current humidity data")
+        return 0.0
+
+# Get current humidity
+
+# Get current precipitation chance
+def get_current_precipitation_probability(data: dict) -> int:
+    try:
+        return int(data["current"]["precipitation_probability"])
+    except KeyError:
+        print("Could not find current precipitation chance data")
+        return 0.0
